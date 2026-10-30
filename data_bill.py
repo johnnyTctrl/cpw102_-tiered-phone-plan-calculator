@@ -1,41 +1,52 @@
-"""Extend your phone bill lab with premium membership and tiered pricing."""
-
-
 def exceeds_data_limit(data_used):
-    """Return True when data_used exceeds 10 GB; otherwise return False.
+    """Return true if data usage exceeds 10 GGb."""
+    return data_used > 10
 
-    Reuse your lab's Boolean-returning function here.
-    """
-    pass
-
-
-def get_overage_rate(data_used, has_premium):
-    """Return the numeric rate for every overage GB.
-
-    data_used is total usage in GB; has_premium is a Boolean.
-
-    Total data used           Regular    Premium
-    10 GB or less                0          0
-    More than 10, up to 20       2          1
-    More than 20                3          2
-
-    Use if-elif-else for tiers and a nested decision for membership.
-    Return the rate rather than printing it.
-    """
-    pass
-
+def get_overage_rate(data_used, has_premuim):
+    """Return the correct overage rate."""
+    if data_used <=10:
+         return 0
+    elif data_used <= 20:
+        if has_premuim:
+            return 1
+        else:
+            return 2
+    else:
+        if has_premuim:
+            return 2
+        else:
+            return 3
 
 def main():
-    """Keep your lab's inputs, calculations, and messages together here.
+    data_used = float(input("Enter data used (GB): "))
+    base_plan_cost = float(input("Enter base monthly plan cost: "))
 
-    Add the premium input and convert it to a Boolean.
-    Call exceeds_data_limit() in a decision.
-    Use get_overage_rate() instead of the fixed $2 rate.
-    Add the premium recommendation described in the README.
-    """
-    pass
+    premium_answer = input("Do you have premium membership? (yes or no): ")
+    has_premium = premium_answer.strip().lower() == "yes"
 
+    data_limit = 10 
+    extra_data = 0
+    if exceeds_data_limit(data_used):
+        extra_data = data_used - data_limit
+        print(f"You are {extra_data:.1f} GB over your limit.")
+        if extra_data <= 5:
+            print("Moderate extra usage.")
+        else:
+            print("High extra usage.")
+    else:
+        print("You are within your data limit.")
 
-# Keep this guard: importing functions for tests must not prompt for input.
+    overage_rate = get_overage_rate(data_used, has_premium)
+    overage_cost = extra_data * overage_rate
+    total_bill = base_plan_cost + overage_cost
+
+    print(f"GB over limit: {extra_data:.1f}")
+    if extra_data > 0:
+        print(f"Overage rate: ${overage_rate:.2f} per GB")
+    print(f"Overage cost: ${overage_cost:.2f}") 
+    print(f"Total bill: ${total_bill:.2f}")
+    if not has_premium and exceeds_data_limit(data_used):
+            print("Consider premium membership to reduce ypur overage rate.")
+
 if __name__ == "__main__":
-    main()
+    main()   
